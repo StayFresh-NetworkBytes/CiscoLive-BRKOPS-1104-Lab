@@ -1,0 +1,203 @@
+Building configuration...
+
+Current configuration : 4668 bytes
+!
+! Last configuration change at 16:16:05 UTC Sun Jun 1 2025
+!
+version 17.15
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname cml-demo-core4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+login on-success log
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-131184832
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-131184832
+ revocation-check none
+ rsakeypair TP-self-signed-131184832
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-131184832
+ certificate self-signed 01
+  3082032E 30820216 A0030201 02020101 300D0609 2A864886 F70D0101 0D050030
+  30312E30 2C060355 04030C25 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31333131 38343833 32301E17 0D323530 35313031 39323733
+  345A170D 33353035 31303139 32373334 5A303031 2E302C06 03550403 0C25494F
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3133 31313834
+  38333230 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 82010A02
+  82010100 9A5B29F6 52711207 76916100 B413970E 9419153C B71DE0F2 8664DF71
+  E5203B37 609AB8B9 821D9C26 91FC5F45 A8F14B01 50F82188 8E500F83 34B9AC69
+  40F6208D 4AE1689A 36EB9C43 53C5D486 95222B17 67D3D942 62B7A530 F857F6F2
+  15368254 90600B56 16EA7D4A A3D6FE3A C1691D19 3FAEE9C7 7E42222D 01564021
+  C781BE98 64A36A12 AF98CE69 9A0A59DF D558A0E3 9161E140 98862948 3C3FD125
+  179026DA BCFA9F75 CE99B8DD F8D1E5AB 69E4584B C03AD512 C373579F BDBEA92B
+  FA817BAE 09E02EA6 4BE1D269 665D019F E1CFDFB1 1C822235 B11B152E 11584D51
+  5A0C9877 78F931E7 881604CD 65316152 EE7A535E 7FA42B9D DC6D478D DA1CB8F9
+  2C292A63 02030100 01A35330 51301D06 03551D0E 04160414 FC3439F4 D0C15B27
+  14B3A9E4 CDF0CBEF E4E0F69E 301F0603 551D2304 18301680 14FC3439 F4D0C15B
+  2714B3A9 E4CDF0CB EFE4E0F6 9E300F06 03551D13 0101FF04 05300301 01FF300D
+  06092A86 4886F70D 01010D05 00038201 010024A9 7F4AD212 B2590260 076EC5FC
+  7F01E186 DC46C666 A4BB992A ED31B86E 109D400C CC699B78 1859A931 46EC1CB8
+  142D862F CC78B351 0E62285E A7553D3E BF23B868 7DD940B6 8654BF41 2A49944D
+  DEB07521 87A557E7 E116B01F 971CD54C 279BE7C2 6B702999 C32759CF 92DDE5AC
+  09735EA7 25476F87 E2546353 C0BFD36F 2D6DF9B2 97542727 F0A7794E FD6863C4
+  DCC8B971 7345FFAD 5EA5BB67 F35C9BAD 34299C06 7CE3C0ED F87F9E29 3E30264B
+  BD4C38D7 83F19EB7 239C375E AF734CCA 4078F97D C4E216D8 6E12ECCD C7DE2F00
+  DBEB528A CA116625 D8236991 9208FFA2 2064B854 D0F1BC30 878284FC DE533727
+  A4B405DC 3F8753C7 3A69BC11 05709239 48EF
+  	quit
+!
+!
+memory free low-watermark processor 80093
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.200.3.4 255.255.255.255
+ ipv6 address 2001:DB8:CAFE:3::4/128
+ ipv6 ospf 100 area 0
+ ospfv3 100 ipv4 area 0
+!
+interface Ethernet0/0
+ ip address 10.200.2.6 255.255.255.252
+ ipv6 address 2001:DB8:CAFE:2::5/126
+ ipv6 ospf 100 area 0
+ ospfv3 100 ipv4 area 0
+!
+interface Ethernet0/1
+ ip address 10.200.2.14 255.255.255.252
+ ipv6 address 2001:DB8:CAFE:2::E/126
+ ipv6 ospf 100 area 0
+ ospfv3 100 ipv4 area 0
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospfv3 100
+ !
+ address-family ipv4 unicast
+ exit-address-family
+ !
+ address-family ipv6 unicast
+ exit-address-family
+!
+router bgp 65000
+ bgp router-id interface Loopback0
+ bgp log-neighbor-changes
+ neighbor 10.200.3.1 remote-as 65000
+ neighbor 10.200.3.1 update-source Loopback0
+ neighbor 10.200.3.2 remote-as 65000
+ neighbor 10.200.3.2 update-source Loopback0
+ neighbor 10.200.3.3 remote-as 65000
+ neighbor 10.200.3.3 update-source Loopback0
+ neighbor 2001:DB8:CAFE:3::1 remote-as 65000
+ neighbor 2001:DB8:CAFE:3::1 update-source Loopback0
+ neighbor 2001:DB8:CAFE:3::2 remote-as 65000
+ neighbor 2001:DB8:CAFE:3::2 update-source Loopback0
+ neighbor 2001:DB8:CAFE:3::3 remote-as 65000
+ neighbor 2001:DB8:CAFE:3::3 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 10.200.3.1 activate
+  neighbor 10.200.3.2 activate
+  neighbor 10.200.3.3 activate
+  no neighbor 2001:DB8:CAFE:3::1 activate
+  no neighbor 2001:DB8:CAFE:3::2 activate
+  no neighbor 2001:DB8:CAFE:3::3 activate
+ exit-address-family
+ !
+ address-family ipv6
+  neighbor 2001:DB8:CAFE:3::1 activate
+  neighbor 2001:DB8:CAFE:3::2 activate
+  neighbor 2001:DB8:CAFE:3::3 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip ssh bulk-mode 131072
+no logging btrace
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login
+ transport input ssh
+!
+!
+!
+!
+end

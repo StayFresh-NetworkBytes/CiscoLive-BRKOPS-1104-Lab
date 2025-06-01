@@ -1,0 +1,180 @@
+#cloud-config
+hostname: ubuntu-services
+manage_etc_hosts: True
+system_info:
+  default_user:
+   name: netadmin
+password: s3cr3tpw1
+chpasswd: { expire: False }
+ssh_pwauth: True
+ssh_authorized_keys:
+- ssh-rsa <SomeRemovedPublicKey>
+write_files:
+- path: /etc/netplan/network.yaml
+  permissions: '0600'
+  content: |
+    network:
+      version: 2
+      ethernets:
+        ens2:
+        #External LAN
+          dhcp4: false
+          addresses:
+          - 192.168.1.210/24
+          routes:
+          - to: default
+            via: 192.168.1.1
+          nameservers:
+            addresses:
+            - 192.168.1.1
+        ens3:
+        # Out of Band network
+          dhcp4: false
+          addresses:
+          - 10.255.255.210/24
+        ens4:
+        #CML Internal Networks
+          dhcp4: false
+          addresses:
+          - 172.16.1.210/24
+          - 2001:db8:cafe:100::210/64
+          routes:
+          - to: 172.16.1.0/12
+            via: 172.16.1.254
+          - to: 10.0.0.0/9
+            via: 172.16.1.254
+          - to: 2001:db8::/32
+            via: 2001:db8:cafe:100::1/64
+- path: /root/db.172.16.1
+  permissions: '0644'
+  content: |
+    ;
+    ; BIND reverse data file for 172.16.1.0 network
+    ;
+    $TTL    604800
+    @       IN      SOA     ns.cml.lab. root.cml.lab. (
+                                  2         ; Serial
+                             604800         ; Refresh
+                              86400         ; Retry
+                            2419200         ; Expire
+                             604800 )       ; Negative Cache TTL
+    ;
+    @       IN      NS      ns.
+    210     IN      PTR     ns.cml.lab.
+    210     IN      PTR     ubuntu-services.cml.lab.
+
+    ; Reverse internal lab 172.16.1 hosts
+
+- path: /root/db.10.255.255
+  permissions: '0644'
+  content: |
+    ;
+    ; BIND reverse data file for 10.255.255.0 network
+    ;
+    $TTL    604800
+    @       IN      SOA     ns.cml.lab. root.cml.lab. (
+                                  2         ; Serial
+                             604800         ; Refresh
+                              86400         ; Retry
+                            2419200         ; Expire
+                             604800 )       ; Negative Cache TTL
+    ;
+            IN      NS      ubuntu-services.cml.lab.
+
+    ; Out-of-Band management hosts
+
+    101     IN      NS      cml-demo-lf1.cml.lab.
+    102     IN      NS      cml-demo-lf2.cml.lab.
+    103     IN      NS      cml-demo-lf3.cml.lab.
+    201     IN      NS      cml-demo-sp1.cml.lab.
+    202     IN      NS      cml-demo-sp2.cml.lab.
+    210     IN      NS      time.cml.lab.
+
+- path: /root/db.cml.lab
+  permissions: '0644'
+  content: |
+    ;
+    ; BIND data file for local 172.16.1.0 network
+    ;
+    $TTL    604800
+    @       IN      SOA     cml.lab. root.cml.lab. (
+                                  2         ; Serial
+                             604800         ; Refresh
+                              86400         ; Retry
+                            2419200         ; Expire
+                             604800 )       ; Negative Cache TTL
+    ;
+    @       IN      NS      ns.cml.lab.
+    @       IN      A       172.16.1.210
+    @       IN      AAAA    2001:db8:cafe:100::210
+    ns      IN      A       172.16.1.210
+
+    ; CML Lab Hosts
+    ubuntu-services      IN      A       172.16.1.210
+- path: /root/named.conf.local
+  permissions: '0644'
+  content: |
+    zone "example.com" {
+        type master;
+        file "/etc/bind/db.cml.lab";
+    };
+
+    zone "1.16.172.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.172";
+    }
+
+    zone "255.255.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.10.255.255";
+    }
+- path: /root/named.conf.options
+  permissions: '0644'
+  content: |
+    options {
+            directory "/var/cache/bind";
+
+            // If there is a firewall between you and nameservers you want
+            // to talk to, you may need to fix the firewall to allow multiple
+            // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+            // If your ISP provided one or more IP addresses for stable
+            // nameservers, you probably want to use them as forwarders.
+            // Uncomment the following block, and insert the addresses replacing
+            // the all-0's placeholder.
+
+            forwarders {
+                 9.9.9.9;
+                 8.8.8.8;
+                 8.8.4.4;
+            };
+
+            //========================================================================
+            // If BIND logs error messages about the root key being expired,
+            // you will need to update your keys.  See https://www.isc.org/bind-keys
+            //========================================================================
+            dnssec-validation auto;
+
+            listen-on-v6 { any; };
+    };
+ntp:
+  enabled: true
+  ntp_client: systemd-timesyncd
+  servers:
+  - 192.168.1.210
+runcmd:
+- sudo apt update
+- sudo apt full-upgrade -y
+- sudo apt install bind9 dnsutils python3 python3-pip chrony squid -y
+- sudo timedatectl set-timezone America/New_York
+- sudo rm /etc/netplan/50-cloud-init.yaml
+- sudo bash -c "echo 'allow' >> /etc/chrony/chrony.conf"
+- sudo systemctl restart chrony
+- sudo netplan generate
+- sudo netplan apply
+- sudo mv /root/db.172.16.1 /etc/bind/
+- sudo mv /root/db.10.255.255 /etc/bind
+- sudo mv /root/db.cml.lab /etc/bind/
+- sudo mv /root/named.conf.local /etc/bind/
+- sudo mv /root/named.conf.options /etc/bind/
+- chown bind:bind /etc/bind/db.172.16.1 /etc/bind/db.10.255.255 /etc/bind/db.cml.lab /etc/bind/named.conf.local /etc/bind/named.conf.options

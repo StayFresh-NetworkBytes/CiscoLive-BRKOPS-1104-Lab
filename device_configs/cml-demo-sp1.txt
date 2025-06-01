@@ -1,0 +1,231 @@
+Building configuration...
+
+Current configuration : 5834 bytes
+!
+! Last configuration change at 16:16:35 UTC Sun Jun 1 2025 by netadmin
+!
+version 17.15
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname cml-demo-sp1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition management
+ !
+ address-family ipv4
+ exit-address-family
+!
+no logging console
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip audit notify log
+ip audit po max-events 100
+ip multicast-routing
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-131184790
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-131184790
+ revocation-check none
+ rsakeypair TP-self-signed-131184790
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-131184790
+ certificate self-signed 01
+  3082032E 30820216 A0030201 02020101 300D0609 2A864886 F70D0101 0D050030
+  30312E30 2C060355 04030C25 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31333131 38343739 30301E17 0D323530 34323131 31323032
+  355A170D 33353034 32313131 32303235 5A303031 2E302C06 03550403 0C25494F
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3133 31313834
+  37393030 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 82010A02
+  82010100 B28D12DE 484DBB7F A4360FA8 B1C18A01 6AFE8E72 30D63C28 D6F3343B
+  E264F98F E4C04CDC C7619A2D 22DE5468 15537213 940DB427 86EBFBAA 9036E269
+  67CA6EC1 4138725A 322C72E5 FAD168D6 C1ECC033 62A6C306 D6066083 30FF170A
+  E6B9F62C C4F20C1A 6D4215BD D4D0B548 828C9342 273B0F89 A37AEA27 C9977C2F
+  12DBA6D0 F3526C68 DADA3D40 4350484E F8E1B6EF 0204AEF3 A34F3E79 0380A637
+  B9EBA74A EDBE0DC0 44961E03 60953A97 55ABB390 7AD1CE0C 48160B71 9EB200D3
+  1D2A4CB3 B7BDADC0 BC380B3A 1FE07FDE 39267A85 141B89D7 7541B293 E2F9CD8C
+  C707735A 73837E0D 2DC3A9E5 360DEE8F 9DD1632A 959A8053 E0974A5E 6AF061B8
+  0F8A1967 02030100 01A35330 51301D06 03551D0E 04160414 C9D7227F F38874D7
+  B9250307 AB8B4A34 E1FF0B5A 301F0603 551D2304 18301680 14C9D722 7FF38874
+  D7B92503 07AB8B4A 34E1FF0B 5A300F06 03551D13 0101FF04 05300301 01FF300D
+  06092A86 4886F70D 01010D05 00038201 0100239C 15B08644 271A3972 8C17DADA
+  7FA56B30 79091B53 23BDC21A BE737F62 39BE8D0E 76E82FAC 552CB3F0 EBECDE68
+  DED3EB73 EF2BA42E 894E356E 00109476 E03C65B8 15C79B56 C2BE2A41 5237AA15
+  A64472EA 6DD3F445 25518F3A B42848CA 8405FF14 11653AED 9525A967 3F4B84A7
+  463C5F58 F9E3AE4D 91777510 8A77EED1 498A03AB 49E4A37E 4B197D1A 835499D4
+  A3F6452A 6E0F8227 DDF0BC06 C6670DAB 27F7855D 62F4490F 6F0ABB22 5B81D72B
+  6BCC8203 2E1A26F8 96700BB7 E047381F 4B761448 0DF9B12D 87364373 C9428A20
+  1BFA82EE 66004D72 7C92D886 F81C6053 00808532 3786C045 921952BB 498AAA75
+  3BAB78BE DE60CD73 E24593A3 848B29A0 C2F5
+  	quit
+!
+!
+memory free low-watermark processor 79593
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+username netadmin privilege 15 secret 9 $9$oSIce4yld/v48E$LIln7eIcy3dc.3GZRWutY7OwT2VBCNLVint9.3UqPEQ
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 192.168.100.201 255.255.255.255
+ ip pim sparse-mode
+ ip ospf 100 area 0
+!
+interface Loopback1
+ ip address 1.2.3.4 255.255.255.255
+ ip pim sparse-mode
+ ip ospf 100 area 0
+!
+interface Ethernet0/0
+ no switchport
+ ip unnumbered Loopback0
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+!
+interface Ethernet0/1
+ no switchport
+ ip unnumbered Loopback0
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+!
+interface Ethernet0/2
+ no switchport
+ ip unnumbered Loopback0
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+!
+interface Ethernet0/3
+ no switchport
+ ip unnumbered Loopback0
+ ip pim sparse-mode
+ ip ospf network point-to-point
+ ip ospf 100 area 0
+!
+interface Ethernet1/0
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+ no switchport
+ vrf forwarding management
+ ip address 10.255.255.201 255.255.255.0
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 100
+!
+router bgp 65000
+ bgp log-neighbor-changes
+ bgp update-delay 1
+ bgp graceful-restart
+ no bgp default ipv4-unicast
+ neighbor 192.168.100.11 remote-as 65000
+ neighbor 192.168.100.11 update-source Loopback0
+ neighbor 192.168.100.101 remote-as 65000
+ neighbor 192.168.100.101 update-source Loopback0
+ neighbor 192.168.100.102 remote-as 65000
+ neighbor 192.168.100.102 update-source Loopback0
+ neighbor 192.168.100.103 remote-as 65000
+ neighbor 192.168.100.103 update-source Loopback0
+ neighbor 192.168.100.104 remote-as 65000
+ neighbor 192.168.100.104 update-source Loopback0
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  neighbor 192.168.100.11 activate
+  neighbor 192.168.100.11 send-community both
+  neighbor 192.168.100.11 route-reflector-client
+  neighbor 192.168.100.101 activate
+  neighbor 192.168.100.101 send-community both
+  neighbor 192.168.100.101 route-reflector-client
+  neighbor 192.168.100.102 activate
+  neighbor 192.168.100.102 send-community both
+  neighbor 192.168.100.102 route-reflector-client
+  neighbor 192.168.100.103 activate
+  neighbor 192.168.100.103 send-community both
+  neighbor 192.168.100.103 route-reflector-client
+  neighbor 192.168.100.104 activate
+  neighbor 192.168.100.104 send-community both
+  neighbor 192.168.100.104 route-reflector-client
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+ip tcp mss 1280
+ip tcp window-size 212000
+ip http server
+ip http secure-server
+ip pim rp-address 1.2.3.4 15
+ip pim ssm range 10
+ip msdp peer 192.168.100.202 connect-source Loopback0
+ip ssh bulk-mode 131072
+!
+no logging btrace
+ip access-list standard 10
+ 10 permit 232.0.0.0 0.255.255.255
+ip access-list standard 15
+ 10 permit 224.0.0.0 15.255.255.255
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ login local
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login
+ transport input ssh
+!
+!
+end

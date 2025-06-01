@@ -1,0 +1,116 @@
+Building configuration...
+
+Current configuration : 1500 bytes
+!
+! Last configuration change at 16:16:06 UTC Sun Jun 1 2025
+!
+version 17.15
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname cml-demo-bld2-sw
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip audit notify log
+ip audit po max-events 100
+ip cef
+login on-success log
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+memory free low-watermark processor 79593
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no switchport
+ ip address 10.20.1.2 255.255.255.252
+ ipv6 address 2001:DB8:CAFE:21::2/126
+!
+interface Ethernet0/1
+ description alpine-bld2-host1
+ switchport access vlan 350
+ switchport mode access
+ spanning-tree portfast
+!
+interface Ethernet0/2
+ description alpine-bld2-host2
+ switchport access vlan 450
+ switchport mode access
+ spanning-tree portfast
+!
+interface Ethernet0/3
+!
+interface Vlan350
+ ip address 10.20.30.254 255.255.255.0
+ ipv6 address 2001:DB8:CAFE:23::1/64
+!
+interface Vlan450
+ ip address 10.20.40.254 255.255.255.0
+ ipv6 address 2001:DB8:CAFE:24::1/64
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip ssh bulk-mode 131072
+ip route 0.0.0.0 0.0.0.0 10.20.1.1
+!
+no logging btrace
+ipv6 route ::/0 2001:DB8:CAFE:21::1
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login
+ transport input ssh
+!
+!
+end

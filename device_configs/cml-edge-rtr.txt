@@ -1,0 +1,189 @@
+Building configuration...
+
+Current configuration : 4087 bytes
+!
+! Last configuration change at 16:16:02 UTC Sun Jun 1 2025
+!
+version 17.15
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname cml-edge-rtr
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-131184800
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-131184800
+ revocation-check none
+ rsakeypair TP-self-signed-131184800
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-131184800
+ certificate self-signed 01
+  3082032E 30820216 A0030201 02020101 300D0609 2A864886 F70D0101 0D050030
+  30312E30 2C060355 04030C25 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31333131 38343830 30301E17 0D323530 34323131 31323035
+  365A170D 33353034 32313131 32303536 5A303031 2E302C06 03550403 0C25494F
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3133 31313834
+  38303030 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 82010A02
+  82010100 E340F797 CCA76100 91825761 9CCBCE2F 185243DC 7CDC48EC 05610B39
+  6BFF2153 2CAE01F5 76490AA0 D958C2AD 920C62E5 79D7035F 84D67C10 282DD958
+  EE00A291 9B06E4B0 15A0633F 76A9E339 4B334D82 3BBF2895 6DD9261B 9D6FDE53
+  BE43D191 C69FE764 8FB233DB E5BEA9CB FA7CF363 16361AAC 00E8545A 86CCEA67
+  3D8498E1 8081409F 3CFC07DE 76AC208D A4F57E9A A6480B96 E20DA6A9 BFD3A307
+  051E94FD 084C7942 B87CE3C5 48BE29DA 834D614C A261199A D083CF22 84A00466
+  80A75D17 F7FCECD5 B1A16506 39F901AA B1CD0B60 BD04C7AD 78EEB916 46F611FE
+  74452180 931BD930 EF99F5BC 865AA147 6F6EB547 8ABF82E3 0E03E5E3 C169CBB1
+  778BDAAF 02030100 01A35330 51301D06 03551D0E 04160414 EBE5E631 7B31385E
+  93B140A4 4B3B01B2 428FBE32 301F0603 551D2304 18301680 14EBE5E6 317B3138
+  5E93B140 A44B3B01 B2428FBE 32300F06 03551D13 0101FF04 05300301 01FF300D
+  06092A86 4886F70D 01010D05 00038201 0100071B F972469E F34B0681 349CF786
+  170C70B3 3C95856D 5109D81C EC05F172 5FE05489 8313230D 87708CA1 1C2D387B
+  3A1DC879 F2310B37 A1B142AE 70261B11 0AC0EE7A 96B73E26 C7E6E2BD E6CD8F24
+  F5355154 03B6E680 D24057FC FB0EA5CA 7573DD0A 9CAE2EA1 0611594B 6101FEBE
+  C7898E4D 7CBD4854 763AF358 8D35AF1A A0697E0A CC8D973F 2F51053D 87D4F3D2
+  6B2FD360 B7E73D64 80D1A59E 20108B0F 1A16852A 11728BB1 E079B555 3719A23B
+  8D2DF670 B3E151AD 6E369D1E 7D97AD0E FE150AAE F32EC7EB BE613EEC 8870FF24
+  2AEE1D6C 93321DE3 BC7BD7CE FCEA4068 EF7C5159 5F6D07F9 7B16100B 08BDFA23
+  510877C2 9C5737D1 2E4BB4DB 7CC07BA6 CE86
+  	quit
+!
+!
+memory free low-watermark processor 80093
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description Internet Connection
+ ip address dhcp
+ ip nat outside
+!
+interface Ethernet0/1
+ description Datacenter Fabric
+ no ip address
+!
+interface Ethernet0/1.200
+ description Datacenter Fabric
+ encapsulation dot1Q 200
+ ip address 192.168.254.1 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/2
+ no ip address
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ no ip address
+ shutdown
+!
+interface Ethernet1/1
+ no ip address
+ shutdown
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip nat inside source list 10 interface Ethernet0/0 overload
+ip route 10.10.0.0 255.255.0.0 192.168.254.2
+ip route 10.20.0.0 255.255.0.0 192.168.254.2
+ip route 10.30.0.0 255.255.0.0 192.168.254.2
+ip route 172.16.1.0 255.255.255.0 192.168.254.2
+ip route 172.17.1.0 255.255.255.0 192.168.254.2
+ip route 172.31.1.0 255.255.255.0 192.168.254.2
+ip ssh bulk-mode 131072
+no logging btrace
+ip access-list standard 10
+ 10 permit 172.16.1.0 0.0.0.255
+ 20 permit 172.17.1.0 0.0.0.255
+ 30 permit 172.31.1.0 0.0.0.255
+ 40 permit 10.10.0.0 0.0.255.255
+ 41 permit 10.20.0.0 0.0.255.255
+ 42 permit 10.30.0.0 0.0.255.255
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login
+ transport input ssh
+!
+!
+!
+!
+end

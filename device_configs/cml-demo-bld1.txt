@@ -1,0 +1,191 @@
+Building configuration...
+
+Current configuration : 4271 bytes
+!
+! Last configuration change at 16:16:02 UTC Sun Jun 1 2025
+!
+version 17.15
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname cml-demo-bld1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+login on-success log
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-131184834
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-131184834
+ revocation-check none
+ rsakeypair TP-self-signed-131184834
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-131184834
+ certificate self-signed 01
+  3082032E 30820216 A0030201 02020101 300D0609 2A864886 F70D0101 0D050030
+  30312E30 2C060355 04030C25 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31333131 38343833 34301E17 0D323530 35323731 39323833
+  395A170D 33353035 32373139 32383339 5A303031 2E302C06 03550403 0C25494F
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3133 31313834
+  38333430 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 82010A02
+  82010100 B8D699DE 1B45EFDB D3A34A07 94EE1A48 EFBE7D2F 5370915E 659BB7CC
+  F5BBF847 98E865B5 5C0E302D 5954FBAF 91A13BFD D8939940 D5AB9E6D 51D8FD15
+  93E8C587 AB3AF99E 53A7CBBC 8F2A3478 CF89CFF3 A48D969E 2B4B50A4 DCC969DD
+  5866BF02 C0FD85FF B5B66CA3 0967FF05 C2C3D49D 53B8F894 8CE1B8F2 B7D68D31
+  EC2AFB92 9A9DE483 CE3E8418 4EFE1406 08118814 9945491C 5CCC15C1 80C9753D
+  27A6CF04 983B193C 44D1B0AF 689B8D3F 0C4E330E C9680103 E01CC87F F478932A
+  CC2CA783 69492778 779EF685 498DC03E 5D612DE8 6AF14998 64D4A926 ECDA7039
+  3C02B559 A6C318B2 FAE92493 F127D413 511C1C5E 1192C1D0 E251400B 3AE9B75E
+  7E0A831D 02030100 01A35330 51301D06 03551D0E 04160414 AF926ECB 450969B9
+  177B7A66 44D8D358 305265A5 301F0603 551D2304 18301680 14AF926E CB450969
+  B9177B7A 6644D8D3 58305265 A5300F06 03551D13 0101FF04 05300301 01FF300D
+  06092A86 4886F70D 01010D05 00038201 01007530 FB4D77CD CC260FBB DBC39131
+  95A6DB4A 3808CD80 8200DF23 E3C790DF 1B4A3068 5C748C9D 88ED947C 4B3AA01D
+  77A3E948 537E7CA7 E4C6408A 1A37CF17 4DBA618C A4A3ADCF 42FB2D68 C8CC6CA3
+  7072832E DD6A72BE D7FB4D5F A4ADDBAE 6382868F 75D72E18 EF660715 67D1B186
+  B7FF4190 FCAB1706 4C31501E 55186E35 E3A8EC03 AF309EC5 FDB35A6B 304EB468
+  52368B53 BFE5CBFA CA48D376 1920DDED 0F9E4CAE 811A52C5 917E0412 9A52CC87
+  0890F87B 0ED482F8 59E7D989 3D691531 7F35C653 CAC35386 694B3FB6 6C63DC4A
+  2FD042D1 32115923 E37A8BEC 53A989AF D0642AF4 CB15690D D0B68E04 F00C4056
+  C8F4255B A2559245 E33E46EB FB4978F4 472D
+  	quit
+!
+!
+memory free low-watermark processor 80093
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ ip address 10.200.1.14 255.255.255.252
+ ipv6 address 2001:DB8:CAFE:1::E/126
+ ipv6 ospf 100 area 0
+ ospfv3 100 ipv4 area 0
+!
+interface Ethernet0/1
+ ip address 10.10.0.1 255.255.255.252
+ ip tcp adjust-mss 1300
+ ipv6 address 2001:DB8:CAFE:10::1/126
+ ospfv3 100 ipv4 area 0
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospfv3 100
+ !
+ address-family ipv4 unicast
+ exit-address-family
+ !
+ address-family ipv6 unicast
+ exit-address-family
+!
+router bgp 65010
+ bgp log-neighbor-changes
+ neighbor 10.200.1.13 remote-as 65000
+ neighbor 2001:DB8:CAFE:1::D remote-as 65000
+ !
+ address-family ipv4
+  network 10.10.0.0 mask 255.255.255.252
+  network 10.10.1.0 mask 255.255.255.0
+  network 10.10.30.0 mask 255.255.255.0
+  network 10.10.40.0 mask 255.255.255.0
+  neighbor 10.200.1.13 activate
+  no neighbor 2001:DB8:CAFE:1::D activate
+ exit-address-family
+ !
+ address-family ipv6
+  network 2001:DB8:CAFE:13::/64
+  network 2001:DB8:CAFE:14::/64
+  neighbor 2001:DB8:CAFE:1::D activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+ip route 10.10.1.0 255.255.255.0 10.10.0.2
+ip route 10.10.30.0 255.255.255.0 10.10.0.2
+ip route 10.10.40.0 255.255.255.0 10.10.0.2
+ip ssh bulk-mode 131072
+no logging btrace
+ipv6 route 2001:DB8:CAFE:13::/64 2001:DB8:CAFE:10::2
+ipv6 route 2001:DB8:CAFE:14::/64 2001:DB8:CAFE:10::2
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login
+ transport input ssh
+!
+!
+!
+!
+end
