@@ -1,0 +1,31 @@
+;
+; IPv6 Reverse Zone file for 2001:db8:cafe::/48
+; Zone: e.f.a.c.8.b.d.0.1.0.0.2.ip6.arpa.
+;
+$TTL    604800
+@       IN      SOA     ns.cml.lab. root.cml.lab. (
+                              5         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604700 )       ; Negative Cache TTL
+;
+        IN      NS      ubuntu-service.cml.lab.
+
+; PTR Records for hosts in the 2001:db8:cafe:/48 network
+;
+; IPv6 Address: 2001:db8:cafe:13::a
+; Reverse: a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.3.1.0.0.e.f.a.c.8.d.b.0.1.0.0.2.ip6.arpa.
+a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.3.1.0.0         IN      PTR     alpine-bld1-host1
+
+; IPv6 Address: 2001:db8:cafe:14::a
+; Reverse: a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.3.1.0.0.e.f.a.c.8.d.b.0.1.0.0.2.ip6.arpa.
+a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.4.1.0.0         IN      PTR     alpine-bld1-host2
+
+; IPv6 Address: 2001:db8:cafe:23::a
+; Reverse: a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.3.1.0.0.e.f.a.c.8.d.b.0.1.0.0.2.ip6.arpa.
+a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.3.2.0.0         IN      PTR     alpine-bld2-host1
+
+; IPv6 Address: 2001:db8:cafe:24::a
+; Reverse: a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.3.1.0.0.e.f.a.c.8.d.b.0.1.0.0.2.ip6.arpa.
+a.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.4.2.0.0         IN      PTR     alpine-bld2-host2

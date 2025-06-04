@@ -1,0 +1,22 @@
+;
+; BIND reverse data file for 10.255.255.0 network
+;
+$TTL    604800
+@       IN      SOA     ns.cml.lab. root.cml.lab. (
+                              4         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+        IN      NS      ubuntu-services.cml.lab.
+
+; Out-of-Band management hosts
+
+101     IN      PTR      cml-demo-lf1.cml.lab.
+102     IN      PTR      cml-demo-lf2.cml.lab.
+103     IN      PTR      cml-demo-lf3.cml.lab.
+104     IN      PTR      cml-demo-border.cml.lab.
+201     IN      PTR      cml-demo-sp1.cml.lab.
+202     IN      PTR      cml-demo-sp2.cml.lab.
+210     IN      PTR      time.cml.lab.

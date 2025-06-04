@@ -1,0 +1,15 @@
+;
+; BIND reverse data file for 172.17.1.0 network
+;
+$TTL    604800
+@       IN      SOA     ns.cml.lab. root.cml.lab. (
+                              4         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604700 )       ; Negative Cache TTL
+;
+        IN      NS      ubuntu-service.cml.lab.
+
+; Reverse internal lab 172.17.1 hosts
+10	IN	PTR	vlan50-host.cml.lab.

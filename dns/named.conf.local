@@ -1,0 +1,24 @@
+zone "cml.lab" {
+    type master;
+    file "/etc/bind/db.cml.lab";
+};
+
+zone "1.17.172.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.172.17.1";
+};
+
+zone "1.16.172.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.172.16.1";
+};
+
+zone "255.255.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.10.255.255";
+};
+
+zone "e.f.a.c.8.b.d.0.1.0.0.2.ip6.arpa" {
+    type master;
+    file "/etc/bind/db.2001.db8.cafe";
+};

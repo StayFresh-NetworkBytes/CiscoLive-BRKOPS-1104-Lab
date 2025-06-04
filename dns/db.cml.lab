@@ -1,0 +1,47 @@
+;
+; BIND data file for local cml.lab network
+;
+$TTL    604800
+@       IN      SOA     cml.lab. root.cml.lab. (
+                              6         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ns.cml.lab.
+@       IN      A       172.16.1.210
+ns      IN      A       172.16.1.210
+
+; CML Lab 172.16.1 Hosts
+vlan100-host	     	IN	A	172.16.1.10
+ubuntu-services      	IN      A       172.16.1.210
+time			IN	A	172.16.1.210
+
+; CML Lab 172.17.1 Hosts
+vlan50-host         	IN      A       172.17.1.10
+
+; CML Lab 10.255.255 Hosts
+cml-demo-lf1		IN	A	10.255.255.101
+cml-demo-lf2		IN	A	10.255.255.102
+cml-demo-lf3		IN	A	10.255.255.103
+cml-demo-border		IN	A	10.255.255.104
+cml-demo-sp1		IN	A	10.255.255.201
+cml-demo-sp2		IN	A	10.255.255.202
+time			IN	A	10.255.255.210
+
+; CML Lab Building1 hosts
+cml-demo-bld1-fw	IN	A	10.10.0.2
+alpine-bld1-host1       IN	A	10.10.30.10 
+alpine-bld1-host2       IN      A	10.10.40.10
+
+; CML Lab Building2 hosts
+cml-demo-bld2-fw        IN      A       10.20.0.2
+alpine-bld2-host1       IN      A       10.20.30.10
+alpine-bld2-host2       IN      A       10.20.40.10
+
+; CML Lab IPv6 Addresses
+alpine-bld1-host1       IN      AAAA    2001:db8:cafe:13::10
+alpine-bld1-host2       IN      AAAA    2001:db8:cafe:14::10
+alpine-bld2-host1       IN      AAAA    2001:db8:cafe:23::10
+alpine-bld2-host2       IN      AAAA    2001:db8:cafe:24::10
