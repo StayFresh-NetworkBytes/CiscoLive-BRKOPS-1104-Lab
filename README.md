@@ -30,8 +30,6 @@ It can also be fixed using the Ansible Playbook in the ansible_nve directory.  P
 
 The external connector for physical hardware has been removed from the final lab.  The network gear supporting it is still there and the node has been replaced with an alpine node.  To recreate the external hardware portion on your own, your CML host needs an additional bridge connector.  The details for configuring it are below.
 
-
-
 ## Diagrams
 
 Diagrams documenting the physical topology, IPv4 and IPv6 addressing, and IPsec tunnel, VLANS/VNI configuration for the lab are all documented in the CL2025-brkops1104-topology.pdf document.  A topology folder containing the individual diagrams in PDF and PNG format is also available.
@@ -53,6 +51,25 @@ As noted above, you need to restart the NVE interfaces to get the control plane 
 The "show nve peers" and "debug" commands have a tag associated with them of "show_nve_peers".  This allows you to run the show and debug commands only to see the status of the nve peers.  I have attached an image below to show you what a healthy nve peering relationship should look like on each node.
 
 ![Healthy NVE Peer example](/ansible_nve/healthy_nve_status.png)
+
+### Setup Ansible
+
+The ubuntu node has Python and Pip3, but in order to install ansible you need to add the python3-venv package.  To do this, from the console in CML or by SSH, access the Ubuntu-Services node.
+
+On this Ubuntu-Services node run the following commands:
+
+First 
+```
+sudo apt install python3-venv -y
+```
+After installing the python3 venv:
+```
+cd ~/CiscoLive-BRKOPS-1104-Lab/ansible_nve/
+python3 -m venv ./venv
+source ./venv/bin/activate
+pip3 install ansible ansible-pylibssh
+```
+This will install ansible and ansible-pylibssh.  Once installed, you can run the playbooks below.
 
 ### Running the playbooks
 
