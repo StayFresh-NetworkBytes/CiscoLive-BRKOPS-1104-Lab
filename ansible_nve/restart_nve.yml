@@ -1,0 +1,33 @@
+- hosts: all
+  gather_facts: false
+
+  tasks:
+
+  - name: Shutdown NVE interface
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "nve 1"
+        enabled: false
+  - name: No shutdown NVE interface
+    cisco.ios.ios_interfaces:
+      config:
+      - name: "nve 1"
+        enabled: true
+
+  - name: Verify NVE Peers
+    cisco.ios.ios_command:
+     commands:
+       - show nve peers
+    register: nve_output
+    tags: show_nve_peers
+
+  - name: "Pause 5 seconds for VXLAN Control Plane to build"
+    pause:
+      seconds: 5
+
+  - name: Debug show nve peers
+    debug:
+      var: nve_output.stdout_lines
+    tags: show_nve_peers
+
+
