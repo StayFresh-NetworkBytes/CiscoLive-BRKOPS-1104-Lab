@@ -26,10 +26,14 @@ end
 wr
 ```
 
+The external connector for physical hardware has been removed from the final lab.  The network gear supporting it is still there and the node has been replaced with an alpine node.  To recreate the external hardware portion on your own, your CML host needs an additional bridge connector.  The details for configuring it are below.
+
+
+
 ## Diagrams
 
 Diagrams documenting the physical topology, IPv4 and IPv6 addressing, and IPsec tunnel, VLANS/VNI configuration for the lab are all documented in the CL2025-brkops1104-topology.pdf document.  A topology folder containing the individual diagrams in PDF and PNG format is also available.
 
-### DNS
+## DNS
 
 As part of the node configuration, BIND9 is installed on the system and files are generated as part of the cloud-config to deploy DNS.  The DNS folder contains the raw files from the node.  In the future, these files will be pulled down from the git repo and deployed to the CML Ubuntu-Services node as part of the cloud-init.
