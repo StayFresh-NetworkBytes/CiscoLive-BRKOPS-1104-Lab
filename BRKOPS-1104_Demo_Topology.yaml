@@ -487,6 +487,9 @@ nodes:
           - sudo mv /root/named.conf.local /etc/bind/
           - sudo mv /root/named.conf.options /etc/bind/
           - chown bind:bind /etc/bind/db.172.16.1 /etc/bind/db.10.255.255 /etc/bind/db.cml.lab /etc/bind/named.conf.local /etc/bind/named.conf.options
+          - sudo systemctl restart bind9
+          - sudo rm /etc/resolv.conf
+          - sudo mv /root/resolv.conf /etc/resolv.conf
     cpu_limit: null
     cpus: null
     data_volume: null
