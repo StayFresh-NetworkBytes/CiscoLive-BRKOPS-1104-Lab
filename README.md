@@ -52,7 +52,7 @@ As noted above, you need to restart the NVE interfaces to get the control plane 
 
 The "show nve peers" and "debug" commands have a tag associated with them of "show_nve_peers".  This allows you to run the show and debug commands only to see the status of the nve peers.  I have attached an image below to show you what a healthy nve peering relationship should look like on each node.
 
-![Healthy NVE Peer example](/ansible_nve/healthy_nve_peers.png)
+![Healthy NVE Peer example](/ansible_nve/healthy_nve_status.png)
 
 ### Running the playbooks
 
