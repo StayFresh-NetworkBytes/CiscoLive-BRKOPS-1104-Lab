@@ -24,4 +24,4 @@ wr
 
 ## Diagram
 
-![Physical Topology Diagram](./CL2025-brkops1104-topology/Physical Topology.png)
+![Physical Topology Diagram]([./CL2025-brkops1104-topology/Physical Topology.png](https://github.com/StayFresh-NetworkBytes/CiscoLive-BRKOPS-1104-Lab/blob/main/CL2025-brkops1104-topology/Physical%20Topology.png )
