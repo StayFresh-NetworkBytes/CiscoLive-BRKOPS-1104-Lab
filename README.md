@@ -1,5 +1,9 @@
 # BRKOPS-1104 - Model it Up: Building Networks with Cisco Modeling Labs - Attendee Materials
 
+### Physical Topology
+
+![Physical Topology Diagram](/CL2025-brkops1104-topology/Physical%20Topology.png)
+
 Thank you for attending the BRKOPS-1104 session.  This GitHub repository contains the lab topology, diagrams, extracted node configurations, and DNS configurations.  The CML Topology requires CML 2.8.1 or newer.  The lab can be downloaded and imported to your CML server.
 
 ## Notes:
@@ -22,6 +26,10 @@ end
 wr
 ```
 
-## Diagram
+## Diagrams
 
-![Physical Topology Diagram]([./CL2025-brkops1104-topology/Physical Topology.png](https://github.com/StayFresh-NetworkBytes/CiscoLive-BRKOPS-1104-Lab/blob/main/CL2025-brkops1104-topology/Physical%20Topology.png )
+Diagrams documenting the physical topology, IPv4 and IPv6 addressing, and IPsec tunnel, VLANS/VNI configuration for the lab are all documented in the CL2025-brkops1104-topology.pdf document.  A topology folder containing the individual diagrams in PDF and PNG format is also available.
+
+### DNS
+
+As part of the node configuration, BIND9 is installed on the system and files are generated as part of the cloud-config to deploy DNS.  The DNS folder contains the raw files from the node.  In the future, these files will be pulled down from the git repo and deployed to the CML Ubuntu-Services node as part of the cloud-init.
