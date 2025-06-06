@@ -1,0 +1,26 @@
+interface GigabitEthernet0/1
+ description CML_NUC_1
+ switchport trunk native vlan 192
+ switchport trunk allowed vlan 192,292
+ switchport mode trunk
+ spanning-tree portfast trunk
+!
+interface GigabitEthernet0/2
+ description External_CML_Host
+ switchport access vlan 292
+ spanning-tree portfast
+!
+interface GigabitEthernet0/3
+!
+interface GigabitEthernet0/4
+!
+interface GigabitEthernet0/5
+!
+interface GigabitEthernet0/6
+!
+interface GigabitEthernet0/7
+!
+interface GigabitEthernet0/8
+ description Verizon_Home_LAN
+ switchport access vlan 192
+ switchport mode access
