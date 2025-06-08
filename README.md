@@ -8,7 +8,34 @@ Thank you for attending the BRKOPS-1104 session.  This GitHub repository contain
 
 ## Notes:
 
-Credentials for all hosts are:
+The Ubuntu-Services node uses ENS2 for external connectivity to your home network.  The IP address is statically set in the configuration.  There are a couple ways to update this:
+
+First, once the lab is imported, simply change the data in this section with an IP address from the external network you've connected to CML.  Be mindful not to add any spaces as this could break the cloud-config.
+
+```
+      ethernets:
+        ens2:
+        #External LAN
+          dhcp4: false
+          addresses:
+          - 192.168.1.210/24
+          routes:
+          - to: default
+            via: 192.168.1.1
+          nameservers:
+            addresses:
+            - 192.168.1.1
+```
+
+Second, if you have DHCP on your external network, simply remove all the data and set dhcp4 to true.
+```
+      ethernets:
+        ens2:
+        #External LAN
+          dhcp4: true
+```
+
+Credentials for all hosts are below.  The enable secret for the firewalls is the password below.  If you utilize the proxy, ASDM can be accessed using the crendtials below:
 
 ```
 username: netadmin
@@ -36,7 +63,18 @@ Diagrams documenting the physical topology, IPv4 and IPv6 addressing, and IPsec 
 
 ## DNS
 
-As part of the node configuration, BIND9 is installed on the system and files are generated as part of the cloud-config to deploy DNS.  The DNS folder contains the raw files from the node.  In the future, these files will be pulled down from the git repo and deployed to the CML Ubuntu-Services node as part of the cloud-init.
+As part of the node configuration, BIND9 is installed on the system and files are generated as part of the cloud-config to deploy DNS.  The DNS folder contains the raw files from the node.  It does not however contain all the finalized configurations.  You can clone this repo to the Ubuntu-Services node and copy the contents to the BIND directory.  Follow the steps below:
+
+```
+scp netadmin@<ip-of-ubuntu-services-node>
+git clone https://github.com/roguerouter/CiscoLive-BRKOPS-1104-Lab.git
+cd CiscoLive-BRKOPS-1104-Lab/dns
+sudo chmod bind:bind *
+sudo cp * /etc/bind
+sudo systemctl restart bind9
+```
+
+This will add all the IPv6 addressing and completed DNS entries for hosts in the lab.
 
 ## Ansible Playbook to restart NVE interfaces
 

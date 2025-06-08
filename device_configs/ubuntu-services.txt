@@ -114,7 +114,7 @@ write_files:
 - path: /root/named.conf.local
   permissions: '0644'
   content: |
-    zone "example.com" {
+    zone "cml.lab" {
         type master;
         file "/etc/bind/db.cml.lab";
     };
@@ -122,12 +122,12 @@ write_files:
     zone "1.16.172.in-addr.arpa" {
         type master;
         file "/etc/bind/db.172";
-    }
+    };
 
     zone "255.255.10.in-addr.arpa" {
         type master;
         file "/etc/bind/db.10.255.255";
-    }
+    };
 - path: /root/named.conf.options
   permissions: '0644'
   content: |
