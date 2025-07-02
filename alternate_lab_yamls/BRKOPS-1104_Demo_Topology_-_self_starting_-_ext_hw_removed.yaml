@@ -136,7 +136,7 @@ annotations:
     text_bold: false
     text_content: |-
       10.20.30.10/24
-      2001:db8:cafe:23::10/64
+      2001:db8:cafe:23::a/64
     text_font: monospace
     text_italic: false
     text_size: 12
@@ -153,7 +153,7 @@ annotations:
     text_bold: false
     text_content: |-
       10.20.40.10/24
-      2001:db8:cafe:24::10/64
+      2001:db8:cafe:24::a/64
     text_font: monospace
     text_italic: false
     text_size: 12
@@ -170,7 +170,7 @@ annotations:
     text_bold: false
     text_content: |-
       10.10.40.10/24
-      2001:db8:cafe:14::10/64
+      2001:db8:cafe:14::a/64
     text_font: monospace
     text_italic: false
     text_size: 12
@@ -187,7 +187,7 @@ annotations:
     text_bold: false
     text_content: |-
       10.10.30.10/24
-      2001:db8:cafe:13::10/64
+      2001:db8:cafe:13::a/64
     text_font: monospace
     text_italic: false
     text_size: 12
@@ -426,8 +426,8 @@ nodes:
     ram: null
     tags:
       - VNI100100
-    x: -196
-    y: -120
+    x: -197
+    y: -123
     interfaces:
       - id: i0
         label: ens2
@@ -481,7 +481,7 @@ nodes:
     ram: null
     tags: []
     x: 80
-    y: -360
+    y: -361
     interfaces:
       - id: i0
         label: port0
@@ -629,8 +629,8 @@ nodes:
       - VXLAN Fabric
       - Leaf
       - VNI100100
-    x: 80
-    y: -122
+    x: 82
+    y: -124
     interfaces:
       - id: i0
         label: Loopback0
@@ -2033,7 +2033,7 @@ nodes:
     parameters: {}
     ram: null
     tags: []
-    x: 523
+    x: 524
     y: -122
     interfaces:
       - id: i0
@@ -2826,6 +2826,7 @@ nodes:
            nameif outside
            security-level 0
            ip address 10.10.0.2 255.255.255.252
+           ipv6 address 2001:db8:cafe:10::2/126
           !
           interface GigabitEthernet0/1
            description cml-demo-bld1-sw
@@ -2873,6 +2874,8 @@ nodes:
           logging asdm informational
           nat (building1_hosts,outside) source static DM_INLINE_NETWORK_1 DM_INLINE_NETWORK_1 no-proxy-arp route-lookup
           ipv6 route outside ::/0 2001:db8:cafe:10::1
+          ipv6 route building1_hosts 2001:db8:cafe:13::/64 2001:db8:cafe:11::2
+          ipv6 route building1_hosts 2001:db8:cafe:14::/64 2001:db8:cafe:11::2
           route outside 0.0.0.0 0.0.0.0 10.10.0.1 1
           route building1_hosts 10.10.30.0 255.255.255.0 10.10.1.2 1
           route building1_hosts 10.10.40.0 255.255.255.0 10.10.1.2 1
@@ -3186,7 +3189,7 @@ nodes:
             subscribe-to-alert-group inventory periodic monthly
             subscribe-to-alert-group configuration periodic monthly
             subscribe-to-alert-group telemetry periodic daily
-          Cryptochecksum:d50cabb0cf2280dd65cfb28a09fcb212
+          Cryptochecksum:3f693a038f85e8cc7cf70b6494593e93
           : end
     cpu_limit: null
     cpus: null
@@ -3199,7 +3202,7 @@ nodes:
     parameters: {}
     ram: null
     tags: []
-    x: 1320
+    x: 1322
     y: -280
     interfaces:
       - id: i0
@@ -3243,7 +3246,6 @@ nodes:
            nameif outside
            security-level 0
            ip address 10.20.0.2 255.255.255.0
-           ipv6 address 2001:db8:cafe:1::a/126
            ipv6 address 2001:db8:cafe:20::2/126
           !
           interface GigabitEthernet0/1
@@ -3497,7 +3499,7 @@ nodes:
             subscribe-to-alert-group inventory periodic monthly
             subscribe-to-alert-group configuration periodic monthly
             subscribe-to-alert-group telemetry periodic daily
-          Cryptochecksum:9cc0d01dfd0a5fba876e1bcabcd71dcc
+          Cryptochecksum:4ab6b3d2aa982957239c16de65381167
           : end
     cpu_limit: null
     cpus: null
@@ -3511,7 +3513,7 @@ nodes:
     ram: null
     tags: []
     x: 1122
-    y: -560
+    y: -561
     interfaces:
       - id: i0
         label: Management0/0
@@ -3825,6 +3827,7 @@ nodes:
 
           # configure networking
           ip address add 10.20.30.10/24 dev eth0
+          ip -6 address add 2001:db8:cafe:23::a/64 dev eth0
           ip link set dev eth0 up
           ip route add default via 10.20.30.254
           ip link set mtu 1300 dev eth0
@@ -3866,9 +3869,15 @@ nodes:
 
           # configure networking
           ip address add 10.10.30.10/24 dev eth0
+           ip -6 address add 2001:db8:cafe:13::a/64 dev eth0
           ip link set dev eth0 up
           ip route add default via 10.10.30.254
           ip link set mtu 1300 dev eth0
+
+          tee /etc/resolv.conf << EOF
+          search cml.lab
+          nameserver 172.16.1.210
+          EOF
     cpu_limit: null
     cpus: null
     data_volume: null
@@ -3902,6 +3911,7 @@ nodes:
 
           # configure networking
           ip address add 10.20.40.10/24 dev eth0
+          ip -6 address add 2001:db8:cafe:24::a/64 dev eth0
           ip link set dev eth0 up
           ip route add default via 10.20.40.254
           ip link set mtu 1300 dev eth0
@@ -3922,7 +3932,7 @@ nodes:
     ram: null
     tags:
       - vlan450
-    x: 1520
+    x: 1522
     y: -560
     interfaces:
       - id: i0
@@ -3943,6 +3953,7 @@ nodes:
 
           # configure networking
           ip address add 10.10.40.10/24 dev eth0
+          ip -6 address add 2001:db8:cafe:14::a/64 dev eth0
           ip link set dev eth0 up
           ip route add default via 10.10.40.254
           ip link set mtu 1300 dev eth0
@@ -3964,7 +3975,7 @@ nodes:
     tags:
       - vlan400
     x: 1525
-    y: -120
+    y: -121
     interfaces:
       - id: i0
         label: eth0
@@ -4010,6 +4021,32 @@ nodes:
         label: eth0
         mac_address: null
         slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: []
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n31
+    image_definition: null
+    label: asav-0
+    node_definition: asav
+    parameters: {}
+    ram: null
+    tags: []
+    x: 2440
+    y: -200
+    interfaces:
+      - id: i0
+        label: Management0/0
+        mac_address: null
+        slot: 0
+        type: physical
+      - id: i1
+        label: GigabitEthernet0/0
+        mac_address: null
+        slot: 1
         type: physical
 links:
   - id: l0
